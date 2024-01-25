@@ -1,0 +1,39 @@
+@tailwind base;
+.hoverSpan{
+  border-radius: 0px 0px 8px 0px;
+  font-size: 12px;
+  color: #333;
+  font-weight: 400;
+  text-align: center;
+}
+
+.itemsDiv{
+  overflow: hidden;
+  transition: box-shadow 0.1s ease;
+}
+.itemsDiv:hover{
+  transition: all .5s ease;
+    transform: scale(1.05);
+    box-shadow: 0 10px 40px 0 rgba(18, 106, 211, .07), 0 2px 9px 0 rgba(18, 106, 211, .06);
+}
+
+.buttonSalve{
+  background-color: #22d3ee ;
+}
+
+.buttonSalve:hover{
+  background-color: #13b0c7!important;
+}
+
+.chakra-modal__content{
+  width: 35vw !important;
+  heigth: 30vh !important;
+  border-radius: 5px !important;
+}
+
+.button-icon{
+  border-radius: 50% !important;
+}
+
+@tailwind components;
+@tailwind utilities;

@@ -1,0 +1,15 @@
+@tailwind base;
+.highlighted-text{
+  font-size: 12px;
+  background-color: #0000ff54
+}
+
+section.chakra-modal__content{
+  width: 800px !important;
+}
+
+tbody tr td{
+  padding: 10px 
+}
+@tailwind components;
+@tailwind utilities;
