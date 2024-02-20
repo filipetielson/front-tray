@@ -37,7 +37,7 @@ export function ModalMessage({
   text: string
   status: string
   checkedWhatsapp: string
-  loading: () => void
+  loading?: () => void
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -91,7 +91,9 @@ export function ModalMessage({
         type_message: messageType,
       })
       .then(() => {
-        loading()
+        if (loading) {
+          loading()
+        }
         toast.info('Mensagem criada com sucesso')
         onClose()
       })
