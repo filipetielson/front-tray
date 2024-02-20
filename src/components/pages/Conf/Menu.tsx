@@ -10,6 +10,7 @@ import { FaCircleUser } from 'react-icons/fa6'
 import { LiaSignOutAltSolid } from 'react-icons/lia'
 import { SlUser } from 'react-icons/sl'
 import { useNavigate } from 'react-router-dom'
+import { usePlatform } from '../../../hook/ButtonContext'
 import { useAuth } from '../../../hook/auth'
 import { api } from '../../../lib/api'
 import '../myTabs.css'
@@ -19,13 +20,16 @@ export function Conf() {
   const [email, setemail] = useState('')
   const navigate = useNavigate()
   const { signOut } = useAuth()
+  const { EditValue } = usePlatform()
 
   function handlePerfil() {
+    EditValue()
     navigate('/editprofile')
   }
 
   async function loading() {
     const id = localStorage.getItem('@sessions: id')
+
     const response = await api
       .get(`/shopkeeper/${id}`)
       .then((response) => response.data)

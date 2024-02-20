@@ -3,7 +3,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
+import { usePlatform } from '../../hook/ButtonContext'
 import { useAuth } from '../../hook/auth'
 import { api } from '../../lib/api'
 
@@ -47,6 +49,12 @@ export function EditProfile() {
   })
 
   const { id } = useAuth()
+  const { EditValue } = usePlatform()
+
+  function handleBack() {
+    navigate('/')
+    EditValue()
+  }
 
   async function onSubmit(data: CreateClient) {
     try {
@@ -58,11 +66,12 @@ export function EditProfile() {
         password: data.password,
       })
 
-      alert('Cliente atualizado com sucesso')
+      toast.success('Cliente atualizado com sucesso')
+      EditValue()
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mensagemDeErro = (error as any)?.response?.data?.message
-      alert(mensagemDeErro ?? 'Mensagem de erro não disponível')
+      toast.error(mensagemDeErro ?? 'Mensagem de erro não disponível')
     }
   }
 
@@ -83,7 +92,7 @@ export function EditProfile() {
   }, [])
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 m-auto">
       <div className="w-96 m-auto">
         <div>
           <form
@@ -142,7 +151,7 @@ export function EditProfile() {
             <div className="flex gap-4 ">
               <button
                 type="button"
-                onClick={() => navigate('/')}
+                onClick={handleBack}
                 className="flex-1 p-2 bg-slate-400 text-white mt-8 rounded cursor-pointer font-bold tracking-widest hover:bg-slate-600"
               >
                 Voltar
