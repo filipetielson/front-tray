@@ -1,9 +1,11 @@
+import { Header } from '../../components/Header'
 import { Example } from '../../components/Radio'
 import { ModalMensage } from '../../components/modalMensage'
 
 export function Mensage() {
   return (
     <div className="h-full w-full flex">
+      <Header />
       <div className="w-[280px] h-full border-r flex flex-col">
         <Example />
       </div>

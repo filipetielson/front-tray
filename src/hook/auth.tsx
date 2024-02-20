@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useJwt } from "react-jwt";
+import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 
 interface Props {
@@ -26,6 +27,8 @@ function AuthProvider({ children }: Props): JSX.Element {
   const [data, setData] = useState<user>({} as user)
   const { isExpired } = useJwt(data.token!);
 
+  const navigate = useNavigate()
+
 
   async function signIn({
     email,
@@ -47,6 +50,7 @@ function AuthProvider({ children }: Props): JSX.Element {
 
       api.defaults.headers.common.Authorization = `Bearer ${token}`
 
+      
       setData({ name, token, id })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -62,7 +66,10 @@ function AuthProvider({ children }: Props): JSX.Element {
     localStorage.removeItem('@sessions: token')
     localStorage.removeItem('@sessions: name')
     localStorage.removeItem('@sessions: id')
+    navigate('/')
     setData({ name: null, token: null, id: null })
+
+    
     window.location.reload()
   }
 

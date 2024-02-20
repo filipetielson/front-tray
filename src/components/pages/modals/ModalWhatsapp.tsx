@@ -35,7 +35,7 @@ export function ModalWhatsapp() {
     }
   }
   return (
-    <>
+    <div className="px-8 py-4 ">
       <button
         onClick={onOpen}
         className="w-[200px] h-[200px] flex justify-center items-center border-4 rounded border-dashed hover:opacity-80 hover:scale-110 ease-in hover:ease-in duration-300"
@@ -76,6 +76,6 @@ export function ModalWhatsapp() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </div>
   )
 }

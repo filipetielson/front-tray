@@ -1,6 +1,5 @@
 import { Switch } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FaTrashAlt } from 'react-icons/fa'
 import { api } from '../../../lib/api'
 import { ModalMessage } from './ModalMessage'
 import './cssTable.css'
@@ -14,6 +13,7 @@ interface MessageProps {
   status: string
   checkedWhatsapp: string
   type: MessageType
+  typeMessage?: string
 }
 
 export function TdMessage({
@@ -26,7 +26,6 @@ export function TdMessage({
 }: MessageProps) {
   const shopkeeperId = localStorage.getItem('@sessions: id')
   const [checked, setChecked] = useState(checkedWhatsapp === 'true')
-  console.log(status)
 
   async function handleCheck(value: boolean) {
     setChecked(value)
@@ -38,8 +37,8 @@ export function TdMessage({
   }
   return (
     <>
-      <td className="align-top py-3 w-[33%] font-medium ">{title}</td>
-      <td className="align-top  w-[45%]">
+      <td className="align-top py-3 w-[33%] font-light text-xs  ">{title}</td>
+      <td className="align-top  flex font-light text-xs">
         <ModalMessage
           shopkeeperId={shopkeeperId}
           id={id}
@@ -51,15 +50,12 @@ export function TdMessage({
           checkedWhatsapp={checkedWhatsapp}
         />
       </td>
-      <td className="relative align-top py-3 w-[2%] ">
+      <td className="relative align-top py-3 w-[2%] font-light text-xs">
         <Switch
           className="relative "
           onChange={(e) => handleCheck(e.target.checked)}
           defaultChecked={checked}
         />
-      </td>
-      <td className="relative align-top py-3 w-[3%] ">
-        <FaTrashAlt className="relative hover:cursor-pointer top-1 " />
       </td>
     </>
   )

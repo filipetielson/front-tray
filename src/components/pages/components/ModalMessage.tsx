@@ -27,6 +27,7 @@ export function ModalMessage({
   text,
   status,
   checkedWhatsapp,
+  loading,
 }: {
   id: string | undefined
   message: string
@@ -36,6 +37,7 @@ export function ModalMessage({
   text: string
   status: string
   checkedWhatsapp: string
+  loading: () => void
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -52,6 +54,52 @@ export function ModalMessage({
   const [titlee, setTitle] = useState(title)
   const [statuss, setStatus] = useState(status)
   const [textt, setText] = useState(text)
+
+  const typess = {
+    '*': 'Carrinho Abandonado',
+    ag: ' AGUARDANDO PAGAMENTO',
+    env: statuss === 'Enviado' ? 'ENVIADO' : 'A enviar',
+    fin: 'Finalizado',
+    can: 'CANCELADO',
+    'Criar mensagem': 'Criar mensagem',
+  }
+
+  async function messageCreate() {
+    const messageType = typess[type] || 'Tipo não encontrado'
+
+    if (titlee === '' && statuss === '' && textt === '') {
+      return alert('Por gentileza preencha todos os campos')
+    }
+    if (
+      statuss === '' &&
+      types[type] !== 'Cancelados' &&
+      types[type] !== 'Finalizado'
+    ) {
+      return alert('Por gentileza preencha todos os campos')
+    }
+    if (textt === '') {
+      return alert('Por gentileza preencha todos os campos')
+    }
+
+    await api
+      .post('/shopkeeper/create/message', {
+        shopkeeper_id: shopkeeperId,
+        text: textt,
+        title: titlee,
+        status: statuss,
+        checked_whatsapp: checked,
+        type_message: messageType,
+      })
+      .then(() => {
+        loading()
+        toast.info('Mensagem criada com sucesso')
+        onClose()
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error('Error ao criar mensagem')
+      })
+  }
 
   async function handleUpdate() {
     try {
@@ -70,8 +118,15 @@ export function ModalMessage({
     }
   }
 
+  async function deleteMessage() {
+    await api.delete(`/shopkeeper/${id}`).then(() => {
+      onClose()
+      toast.info('Mensagem deletada com sucesso')
+    })
+  }
+
   const compare = [
-    '{{{order.stat}us}}',
+    '{{{order.status}}',
     '{{{order.id}}}',
     '{{{order.date}}}',
     '{{{order.storeNote}}}',
@@ -109,16 +164,23 @@ export function ModalMessage({
   return (
     <>
       {message === 'Criar mensagem' ? (
-        <button
-          className="mt-[50px] font-normal p-2 bg-sky-400 rounded text-white hover:bg-sky-300"
-          onClick={onOpen}
-        >
-          {message}
-        </button>
+        <div className="relative w-full h-14">
+          <button
+            className="font-normal p-2 bg-[#3182ce] rounded text-white hover:bg-[##519de5] absolute right-0"
+            onClick={onOpen}
+          >
+            {message}
+          </button>
+        </div>
       ) : (
-        <button className="hover:underline  text-left" onClick={onOpen}>
-          {message}
-        </button>
+        <div className="relative w-full h-14">
+          <button
+            className="hover:underline  text-left absolute left-0"
+            onClick={onOpen}
+          >
+            {message}
+          </button>
+        </div>
       )}
       <Modal isOpen={isOpen} onClose={onClose} size={''}>
         <ModalOverlay />
@@ -226,7 +288,10 @@ export function ModalMessage({
 
           {id === 'undefined' ? (
             <ModalFooter className="flex gap-3">
-              <button className="px-6 py-2 rounded border bg-cyan-400 text-white font-medium hover:bg-cyan-600 ease-in-out duration-300">
+              <button
+                className="px-6 py-2 rounded border bg-cyan-400 text-white font-medium hover:bg-cyan-600 ease-in-out duration-300"
+                onClick={messageCreate}
+              >
                 Criar Mensagem
               </button>
             </ModalFooter>
@@ -238,7 +303,10 @@ export function ModalMessage({
               >
                 Salvar
               </button>
-              <button className="px-6 py-2 font-medium text-red-600 rounded border border-red-400 hover:bg-red-500 hover:text-white ease-in-out duration-300">
+              <button
+                className="px-6 py-2 font-medium text-red-600 rounded border border-red-400 hover:bg-red-500 hover:text-white ease-in-out duration-300"
+                onClick={deleteMessage}
+              >
                 Apagar Mensagem
               </button>
             </ModalFooter>

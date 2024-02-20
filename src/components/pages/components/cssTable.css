@@ -8,8 +8,21 @@ section.chakra-modal__content{
   width: 800px !important;
 }
 
+.chakra-modal__content-container {
+  margin: auto !important;
+  height: 100%;
+}
+
+section#chakra-modal-\:rf\: {
+  opacity: 1;
+  transform: none;
+  margin: auto;
+  display: flex;
+  height: 100%;
+}
+
 tbody tr td{
-  padding: 10px 
+  padding: 10px 10px 10px 0;
 }
 @tailwind components;
 @tailwind utilities;

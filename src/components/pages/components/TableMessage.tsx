@@ -24,28 +24,40 @@ export function TableMessage({ type }: { type: MessageType }) {
       .get(`/shopkeeper/messages/${shopkeeperId}`)
       .then((response) => setMessage(response.data))
   }
+
   useEffect(() => {
     loading()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
-    <>
-      <table className="w-full text-left border-b text-sm">
+    <div>
+      <ModalMessage
+        id="undefined"
+        loading={loading}
+        status=""
+        shopkeeperId={shopkeeperId}
+        checkedWhatsapp="true"
+        message="Criar mensagem"
+        text=""
+        title=""
+        type={type}
+      />
+
+      <table className="w-full mt-3 text-left border-b text-sm">
         <thead>
           <tr>
             <th>Titulo</th>
             <th>Mensagem</th>
             <th className="flex justify-center">Ativo</th>
-            <th className="flex justify-center"></th>
           </tr>
         </thead>
         <tbody className="h-10 ">
           {messages
             ?.filter((item) =>
-              item.type_message.toLocaleLowerCase().includes(type),
+              (item.type_message?.toLocaleLowerCase() || '').includes(type),
             )
             .map((message) => (
-              <tr key={shopkeeperId} className="h-10 border-b">
+              <tr key={message.id} className="h-10 border-b">
                 <TdMessage
                   id={message.id}
                   title={message.title}
@@ -58,17 +70,6 @@ export function TableMessage({ type }: { type: MessageType }) {
             ))}
         </tbody>
       </table>
-
-      <ModalMessage
-        id="undefined"
-        status=""
-        shopkeeperId={shopkeeperId}
-        checkedWhatsapp="true"
-        message="Criar mensagem"
-        text=""
-        title=""
-        type={type}
-      />
-    </>
+    </div>
   )
 }

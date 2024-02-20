@@ -8,7 +8,7 @@ import { Router } from './routes'
 
 export function App() {
   return (
-    <div className="h-full flex justify-center">
+    <div className="h-full flex">
       <BrowserRouter>
         <AuthProvider>
           <PlatformProvider>
