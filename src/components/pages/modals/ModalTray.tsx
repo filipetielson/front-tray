@@ -23,6 +23,7 @@ const codeUrl = z.object({
   id: z.string().optional(),
   code: z.string().min(10, 'Coloque code valido'),
   url_api: z.string().url(),
+  seller_id: z.string().min(4, 'Coloque id da loja valido'),
 })
 
 type CodeUrl = z.infer<typeof codeUrl>
@@ -32,13 +33,13 @@ export function ModalTray() {
   const [hover, setHover] = useState('')
   const [codeUrlApi, setCodeUrlApi] = useState<CodeUrl[]>([])
   const { id } = useAuth()
-  console.log(id)
 
   const { register, handleSubmit, reset, setValue } = useForm<CodeUrl>({
     resolver: zodResolver(codeUrl),
     defaultValues: {
       code: codeUrlApi[0]?.code,
       url_api: codeUrlApi[0]?.url_api,
+      seller_id: codeUrlApi[0]?.seller_id,
     },
   })
 
@@ -47,6 +48,7 @@ export function ModalTray() {
       await api.post(`/tray/urlApiCodeCreate/${id}`, {
         code: data.code.replace(/\s/g, ''),
         url_api: data.url_api.replace(/\s/g, ''),
+        seller_id: data.seller_id.replace(/\s/g, ''),
       })
       reset()
       onClose()
@@ -141,6 +143,21 @@ export function ModalTray() {
                     <div className="py-4">
                       <h3 className="text-lg font-medium">Passo 3</h3>
                       <p className="text-[#4d5a68]">
+                        Copie o id da loja e cole no campo abaixo
+                      </p>
+                      <h3 className="text-lg font-medium pt-4 pb-2">
+                        Id da loja
+                      </h3>
+                      <input
+                        type="text"
+                        className="w-full p-2 border border-gray-300 rounded-md focus-visible:outline-sky-500 "
+                        placeholder="xxxxxxxxxxxx"
+                        {...register('seller_id')}
+                      />
+                    </div>
+                    <div className="py-4">
+                      <h3 className="text-lg font-medium">Passo 4</h3>
+                      <p className="text-[#4d5a68]">
                         Copie o campo Code e cole no campo abaixo
                       </p>
                       <h3 className="text-lg font-medium pt-4 pb-2">Code</h3>
@@ -152,7 +169,7 @@ export function ModalTray() {
                       />
                     </div>
                     <div className="py-4">
-                      <h3 className="text-lg font-medium">Passo 4</h3>
+                      <h3 className="text-lg font-medium">Passo 5</h3>
                       <p className="text-[#4d5a68]">
                         Copie o campo URL e cole no campo abaixo e clique em
                         Salvar
