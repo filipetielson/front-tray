@@ -79,9 +79,11 @@ export function ModalTray() {
       .get(`/tray/codeUrlApiView/${id}`)
       .then((response) => response.data)
       .catch((error) => console.log(error.Mensage))
-    setCodeUrlApi(response)
-    setValue('code', response[0].code)
-    setValue('url_api', response[0].url_api)
+    if (response) {
+      setCodeUrlApi(response)
+      setValue('code', response[0]?.code)
+      setValue('url_api', response[0]?.url_api)
+    }
   }
 
   useEffect(() => {
