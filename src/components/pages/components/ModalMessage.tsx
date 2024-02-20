@@ -113,6 +113,9 @@ export function ModalMessage({
         checked_whatsapp: checked,
         title: titlee,
       })
+      if (loading) {
+        loading()
+      }
       onClose()
       toast.info('Mensagem atualizada com sucesso')
     } catch (error) {
