@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaRegUserCircle, FaWhatsapp } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
@@ -27,12 +28,14 @@ export function SignUp() {
   const { register, handleSubmit, formState, reset } = useForm<CreateClient>({
     resolver: zodResolver(createClient),
   })
+  const [formSubmitted, setFormSubmitted] = useState(false)
   const { signIn } = useAuth()
 
   const navigate = useNavigate()
 
   async function onSubmit(data: CreateClient) {
     try {
+      setFormSubmitted(true)
       await api.post('/shopkeeper', {
         name: data.name,
         email: data.email,
@@ -46,6 +49,8 @@ export function SignUp() {
     } catch (error) {
       const mensagemDeErro = (error as any)?.response?.data?.message
       alert(mensagemDeErro ?? 'Mensagem de erro não disponível')
+    } finally {
+      setFormSubmitted(false) // Define o estado como false após o envio do formulário (sucesso ou falha)
     }
   }
 
@@ -172,11 +177,14 @@ export function SignUp() {
           </div>
           <div className="flex ">
             <button
-              disabled={!formState.isDirty || !formState.isValid}
+              disabled={
+                !formState.isDirty || !formState.isValid || formSubmitted
+              } // Desabilita o botão se o formulário já foi enviado
               type="submit"
               className="p-2 flex-1 bg-[#49cae4] rounded-3xl cursor-pointer font-normal tracking-widest disabled:bg-slate-200 disabled:cursor-no-drop"
             >
-              Cadastrar
+              {formSubmitted ? 'Aguarde...' : 'Cadastrar'}{' '}
+              {/* Muda o texto do botão durante o envio do formulário */}
             </button>
 
             <button

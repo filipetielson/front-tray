@@ -44,6 +44,8 @@ export function TableAutomation({ type }: { type: MessageType }) {
   const [minutes, setMinutes] = useState('')
   const [titleSelect, setTitleSelect] = useState('')
 
+  console.log(messages)
+
   async function dataFomAutomation() {
     if (titleSelect === '') {
       alert('Por gentileza selecione a mensagem')

@@ -61,7 +61,6 @@ export function ModalTray() {
   }
 
   async function handleToUpdate(data: CodeUrl) {
-    console.log(id)
     try {
       await api.put(`/tray/urliApiCodeUpdate/${id}`, {
         code: data.code.replace(/\s/g, ''),
